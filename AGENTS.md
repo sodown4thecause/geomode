@@ -39,7 +39,7 @@ Run from `packages/lib`: `DATABASE_URL=... npx drizzle-kit migrate`
 See `README.md` for the full commands reference. Key ones:
 
 - `pnpm dev` — start all dev servers (turbo)
-- `pnpm lint` — Biome linter (pre-existing CSS/Tailwind directive warnings are expected)
+- `pnpm lint` — Biome linter. **Not** a CI gate, and `main` currently has pre-existing findings (CSS `@apply`/Tailwind warnings plus `noExplicitAny`/`noNonNullAssertion`-style errors). CI gates on `pnpm turbo check-types`, `pnpm turbo test`, and `pnpm build` instead.
 - `pnpm test` — Vitest unit tests
 - `pnpm build` — build all packages
 - `pnpm format` — format with Biome
@@ -49,7 +49,7 @@ See `README.md` for the full commands reference. Key ones:
 - **Changesets**: Keep changesets short and end-user focused (what changed in the product), not internal implementation details.
 - **PR screenshots**: Do **not** commit before/after screenshots or one-off screenshot capture scripts to the repo. Add proof screenshots as PR artifacts (or attach in the PR description) instead.
 
-- **Node.js 24 required**: The repo enforces `engines.node: "24.x"`. Use `nvm use 24`.
+- **Node.js 24 required**: The repo enforces `engines.node: "24.x"`. Node 24 (via nvm) is the default in **login/interactive** shells. Non-interactive shells fall back to a system Node 22 that wins on `PATH`, so for running the app/build/tests either wrap commands in `bash -lc '...'` or once per session run `export PATH="$HOME/.nvm/versions/node/v24.16.0/bin:$PATH"`. `pnpm install` works on either version (only prints an engine warning).
 - **Biome CSS lint warnings**: The linter reports Tailwind `@apply` directive warnings in CSS files — these are pre-existing and expected.
 - **pnpm build warnings**: Some dependencies have ignored build scripts (sentry-cli, msw, protobufjs, vue-demi). This is configured via `pnpm.onlyBuiltDependencies` and `pnpm.ignoredBuiltDependencies` in root `package.json`.
 - **E2E tests**: Require Playwright browsers (`pnpm exec playwright install`) and a running app instance. They are separate from unit tests.
